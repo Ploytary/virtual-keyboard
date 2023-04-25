@@ -1,0 +1,86 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0 auto;
+  max-width: 768px;
+}
+
+.key {
+  width: 5.5%;
+  aspect-ratio: 1/1;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.key[data-details=Backspace],
+.key[data-details=Tab],
+.key[data-details=Enter],
+.key[data-details=ShiftLeft],
+.key[data-details=ShiftRight],
+.key[data-details=CapsLock],
+.key[data-details=Space],
+.key[data-details=NumpadDecimal],
+.key[data-details=ControlLeft],
+.key[data-details=MetaLeft],
+.key[data-details=AltLeft],
+.key[data-details=AltRight],
+.key[data-details=ArrowLeft],
+.key[data-details=ArrowDown],
+.key[data-details=ArrowUp],
+.key[data-details=ArrowRight],
+.key[data-details=ControlRight] {
+  background-color: lightgray;
+}
+
+.key[data-details=Backspace],
+.key[data-details=Tab],
+.key[data-details=Enter],
+.key[data-details=ShiftLeft],
+.key[data-details=ShiftRight],
+.key[data-details=CapsLock],
+.key[data-details=Space],
+.key[data-details=NumpadDecimal] {
+  flex-grow: 1;
+  aspect-ratio: auto;
+}
+
+.key[data-details=Enter],
+.key[data-details=ShiftRight] {
+  width: 12%;
+  flex-grow: 0;
+  aspect-ratio: auto;
+}
+
+.key[data-details=Space] {
+  width: 12%;
+  aspect-ratio: auto;
+}
+
+.virtual-keyboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  padding: 10px 15px;
+}
+.virtual-keyboard__input-field {
+  width: 100%;
+}
+.virtual-keyboard__note {
+  margin: 0;
+}
+.virtual-keyboard__keys-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 5px;
+}
+.virtual-keyboard__keys-line {
+  display: flex;
+  gap: 1%;
+}
+
+/*# sourceMappingURL=style.css.map */

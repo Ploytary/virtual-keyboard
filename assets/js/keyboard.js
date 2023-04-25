@@ -38,7 +38,9 @@ export default class KeyboardComponent {
     }
 
     this.keyComponents = KEYBOARD_KEYS
-      .map(({ value, code, details }) => new KeyComponent(code, value, details));
+      .filter((keyData) => keyData.order !== undefined)
+      .sort((a, b) => a.order - b.order)
+      .map((keyData) => new KeyComponent(keyData));
   }
 
   render(container) {
@@ -50,8 +52,17 @@ export default class KeyboardComponent {
     this.container = container;
 
     const keysContainer = this.element.querySelector('.virtual-keyboard__keys-container');
-    this.keyComponents.forEach((keyComponent) => {
-      keysContainer.append(keyComponent.getElement());
+    const lineKeysCount = [14, 15, 13, 13, 9];
+    let addedKeys = 0;
+    lineKeysCount.forEach((lineCount) => {
+      const line = document.createElement('div');
+      line.classList.add('virtual-keyboard__keys-line');
+      this.keyComponents.slice(addedKeys, addedKeys + lineCount)
+        .forEach((keyComponent) => {
+          line.append(keyComponent.getElement());
+        });
+      addedKeys += lineCount;
+      keysContainer.append(line);
     });
 
     this.container.append(this.element);

@@ -1,8 +1,12 @@
 export default class KeyComponent {
-  constructor(code, value, details) {
+  constructor(keyData) {
+    const {
+      code, value, order, details,
+    } = keyData;
     this.code = code;
     this.value = value;
     this.details = details;
+    this.order = order;
     this.element = this.getElement();
     this.otherLangValue = [];
   }
@@ -11,7 +15,8 @@ export default class KeyComponent {
     if (!this.element) {
       const element = document.createElement('button');
       element.classList.add('key');
-      element.dataset.code = this.code;
+      element.dataset.details = this.details;
+      element.style.order = this.order;
       this.element = element;
       this.updateElement();
     }
