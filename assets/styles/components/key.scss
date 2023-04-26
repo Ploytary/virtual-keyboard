@@ -5,46 +5,46 @@
   flex-shrink: 0;
 }
 
-.key[data-details="Backspace"],
-.key[data-details="Tab"],
-.key[data-details="Enter"],
-.key[data-details="ShiftLeft"],
-.key[data-details="ShiftRight"],
-.key[data-details="CapsLock"],
-.key[data-details="Space"],
-.key[data-details="NumpadDecimal"],
-.key[data-details="ControlLeft"],
-.key[data-details="MetaLeft"],
-.key[data-details="AltLeft"],
-.key[data-details="AltRight"],
-.key[data-details="ArrowLeft"],
-.key[data-details="ArrowDown"],
-.key[data-details="ArrowUp"],
-.key[data-details="ArrowRight"],
-.key[data-details="ControlRight"] {
+[data-details="Backspace"],
+[data-details="Tab"],
+[data-details="Enter"],
+[data-details="ShiftLeft"],
+[data-details="ShiftRight"],
+[data-details="CapsLock"],
+[data-details="Space"],
+[data-details="NumpadDecimal"],
+[data-details="ControlLeft"],
+[data-details="MetaLeft"],
+[data-details="AltLeft"],
+[data-details="AltRight"],
+[data-details="ArrowLeft"],
+[data-details="ArrowDown"],
+[data-details="ArrowUp"],
+[data-details="ArrowRight"],
+[data-details="ControlRight"] {
   background-color: lightgray;
 }
 
-.key[data-details="Backspace"],
-.key[data-details="Tab"],
-.key[data-details="Enter"],
-.key[data-details="ShiftLeft"],
-.key[data-details="ShiftRight"],
-.key[data-details="CapsLock"],
-.key[data-details="Space"],
-.key[data-details="NumpadDecimal"] {
+[data-details="Backspace"],
+[data-details="Tab"],
+[data-details="Enter"],
+[data-details="ShiftLeft"],
+[data-details="ShiftRight"],
+[data-details="CapsLock"],
+[data-details="Space"],
+[data-details="NumpadDecimal"] {
   flex-grow: 1;
   aspect-ratio: auto;
 }
 
-.key[data-details="Enter"],
-.key[data-details="ShiftRight"] {
+[data-details="Enter"],
+[data-details="ShiftRight"] {
   width: calc(5.5% * 2 + 1%);
   flex-grow: 0;
   aspect-ratio: auto;
 }
 
-.key[data-details="Space"] {
+[data-details="Space"] {
   width: calc(5.5% * 2 + 1%);
   aspect-ratio: auto;
 }

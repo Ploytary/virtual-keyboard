@@ -25,4 +25,8 @@
     display: flex;
     gap: 1%;
   }
+
+  &__key--hold {
+    background-color: green;
+  }
 }
