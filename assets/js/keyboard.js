@@ -12,6 +12,7 @@ export default class KeyboardComponent {
     this.shiftKey = false;
     this.ctrlKey = false;
     this.altKey = false;
+    this.currentInpuMode = 'physical';
     this.currentLang = 'primary';
   }
 
@@ -50,6 +51,8 @@ export default class KeyboardComponent {
       .map((keyData) => new KeyComponent(keyData));
 
     this.setClickListener();
+    this.setKeyboardEventListener();
+    setTimeout(() => { this.outputField.focus(); }, 0);
   }
 
   render(container) {
@@ -79,62 +82,11 @@ export default class KeyboardComponent {
 
   setClickListener() {
     this.element.addEventListener('click', (evt) => {
+      this.currentInpuMode = 'virtual';
       const keyButton = evt.target.closest('.key');
       let printValue = null;
       if (keyButton) {
-        switch (keyButton.dataset.details) {
-          case 'Tab': printValue = '    ';
-            break;
-          case 'Enter': printValue = '\n';
-            break;
-          case 'MetaLeft': printValue = '';
-            break;
-          case 'Backspace':
-            this.deleteChar('backward');
-            printValue = '';
-            break;
-          case 'NumpadDecimal':
-            this.deleteChar('forward');
-            printValue = '';
-            break;
-          case 'CapsLock':
-            this.switchKeyHoldStatus(keyButton);
-            printValue = '';
-            break;
-          case 'ShiftLeft':
-          case 'ShiftRight':
-            this.switchKeyHoldStatus(keyButton);
-            printValue = '';
-            break;
-          case 'ControlLeft':
-          case 'ControlRight':
-            this.switchKeyHoldStatus(keyButton);
-            printValue = '';
-            break;
-          case 'AltLeft':
-          case 'AltRight':
-            this.switchKeyHoldStatus(keyButton);
-            printValue = '';
-            break;
-          case 'ArrowUp':
-            this.moveCaret(-1, 0);
-            printValue = '';
-            break;
-          case 'ArrowDown':
-            this.moveCaret(1, 0);
-            printValue = '';
-            break;
-          case 'ArrowLeft':
-            this.moveCaret(0, -1);
-            printValue = '';
-            break;
-          case 'ArrowRight':
-            this.moveCaret(0, 1);
-            printValue = '';
-            break;
-          default:
-            printValue = keyButton.textContent;
-        }
+        printValue = this.getKeyPrintValue(keyButton);
 
         if (!(keyButton.dataset.details === 'ShiftLeft' || keyButton.dataset.details === 'ShiftRight')) {
           this.shiftKey = false;
@@ -145,6 +97,87 @@ export default class KeyboardComponent {
         this.outputField.focus();
       }
       return undefined;
+    });
+  }
+
+  setKeyboardEventListener() {
+    document.addEventListener('keydown', () => this.outputField.focus());
+    this.element.addEventListener('keydown', (evt) => {
+      const prevInputMode = this.currentInpuMode;
+      this.currentInpuMode = 'physical';
+      if (evt.code !== 'F5') {
+        evt.preventDefault();
+      }
+      const keyCode = evt.code;
+      const associatedKeyComponent = this.keyComponents
+        .find((keyComponent) => keyComponent.details === keyCode);
+      if (!associatedKeyComponent) {
+        return;
+      }
+      const keyElement = associatedKeyComponent.getElement();
+
+      function animationendHandler() {
+        keyElement.classList.remove('virtual-keyboard__key--pressed');
+        keyElement.removeEventListener('animationend', animationendHandler);
+      }
+      associatedKeyComponent.getElement().addEventListener('animationend', animationendHandler);
+
+      const serviceKey = ['ControlLeft', 'ControlRight', 'AltLeft', 'AltRight', 'ShiftLeft', 'ShiftRight', 'CapsLock'];
+      const isServiceKey = serviceKey.some((key) => associatedKeyComponent.details === key);
+      let printValue = '';
+
+      if (isServiceKey) {
+        if (!evt.repeat) {
+          keyElement.classList.add('virtual-keyboard__key--pressed');
+          printValue = this.getKeyPrintValue(keyElement);
+          if (prevInputMode !== this.currentInpuMode) {
+            if ((associatedKeyComponent.details === 'ShiftLeft' || associatedKeyComponent.details === 'ShiftRight')) {
+              this.shiftKey = !this.shiftKey;
+            }
+            if (associatedKeyComponent.details === 'ControlLeft' || associatedKeyComponent.details === 'ControlRight') {
+              this.ctrlKey = !this.ctrlKey;
+            }
+            if (associatedKeyComponent.details === 'AltLeft' || associatedKeyComponent.details === 'AltRight') {
+              this.altKey = !this.altKey;
+            }
+          }
+        }
+      } else if (!evt.repeat) {
+        keyElement.classList.add('virtual-keyboard__key--pressed');
+        printValue = this.getKeyPrintValue(keyElement);
+        if (prevInputMode !== this.currentInpuMode) {
+          this.shiftKey = false;
+          this.altKey = false;
+          this.ctrlKey = false;
+        }
+      } else {
+        keyElement.classList.add('virtual-keyboard__key--hold');
+        printValue = this.getKeyPrintValue(keyElement);
+      }
+
+      this.insertChar(printValue);
+      this.updateKeys();
+      this.outputField.focus();
+    });
+
+    this.element.addEventListener('keyup', (evt) => {
+      this.keyComponents.forEach((component) => {
+        if (!(component.details === 'CapsLock')) {
+          component.getElement().classList.remove('virtual-keyboard__key--hold');
+        }
+
+        if (evt.code === 'ShiftLeft' || evt.code === 'ShiftRight') {
+          this.shiftKey = false;
+        }
+        if (evt.code === 'AltLeft' || evt.code === 'AltRight') {
+          this.altKey = false;
+        }
+        if (evt.code === 'ControlLeft' || evt.code === 'ControlRight') {
+          this.ctrlKey = false;
+        }
+      });
+
+      this.updateKeys();
     });
   }
 
@@ -276,8 +309,11 @@ export default class KeyboardComponent {
 
     if (this.ctrlKey && this.shiftKey) {
       this.switchInputLanguage();
-      this.ctrlKey = false;
-      this.shiftKey = false;
+      if (this.currentInpuMode === 'virtual') {
+        this.ctrlKey = false;
+        this.shiftKey = false;
+        this.altKey = false;
+      }
     }
 
     return undefined;
@@ -375,5 +411,63 @@ export default class KeyboardComponent {
       keyMode = 'base';
     }
     return keyMode;
+  }
+
+  getKeyPrintValue(keyButton) {
+    let printValue = null;
+    switch (keyButton.dataset.details) {
+      case 'Tab': printValue = '    ';
+        break;
+      case 'Enter': printValue = '\n';
+        break;
+      case 'MetaLeft': printValue = '';
+        break;
+      case 'Backspace':
+        this.deleteChar('backward');
+        printValue = '';
+        break;
+      case 'NumpadDecimal':
+        this.deleteChar('forward');
+        printValue = '';
+        break;
+      case 'CapsLock':
+        this.switchKeyHoldStatus(keyButton);
+        printValue = '';
+        break;
+      case 'ShiftLeft':
+      case 'ShiftRight':
+        this.switchKeyHoldStatus(keyButton);
+        printValue = '';
+        break;
+      case 'ControlLeft':
+      case 'ControlRight':
+        this.switchKeyHoldStatus(keyButton);
+        printValue = '';
+        break;
+      case 'AltLeft':
+      case 'AltRight':
+        this.switchKeyHoldStatus(keyButton);
+        printValue = '';
+        break;
+      case 'ArrowUp':
+        this.moveCaret(-1, 0);
+        printValue = '';
+        break;
+      case 'ArrowDown':
+        this.moveCaret(1, 0);
+        printValue = '';
+        break;
+      case 'ArrowLeft':
+        this.moveCaret(0, -1);
+        printValue = '';
+        break;
+      case 'ArrowRight':
+        this.moveCaret(0, 1);
+        printValue = '';
+        break;
+      default:
+        printValue = keyButton.textContent;
+    }
+    return printValue;
   }
 }

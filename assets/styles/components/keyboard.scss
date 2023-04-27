@@ -29,4 +29,8 @@
   &__key--hold {
     background-color: green;
   }
+
+  &__key--pressed {
+    animation: press-key 0.3s ease-in both;
+  }
 }

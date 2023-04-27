@@ -12,6 +12,7 @@ body {
   aspect-ratio: 1/1;
   padding: 0;
   flex-shrink: 0;
+  background-color: initial;
 }
 
 [data-details=Backspace],
@@ -84,6 +85,18 @@ body {
 }
 .virtual-keyboard__key--hold {
   background-color: green;
+}
+.virtual-keyboard__key--pressed {
+  animation: press-key 0.3s ease-in both;
+}
+
+@keyframes press-key {
+  from {
+    background-color: blue;
+  }
+  to {
+    background-color: auto;
+  }
 }
 
 /*# sourceMappingURL=style.css.map */
