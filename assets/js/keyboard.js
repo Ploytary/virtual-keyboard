@@ -50,7 +50,7 @@ export default class KeyboardComponent {
       .sort((a, b) => a.order - b.order)
       .map((keyData) => new KeyComponent(keyData));
 
-    this.setClickListener();
+    this.setPointerEventListener();
     this.setKeyboardEventListener();
     setTimeout(() => { this.outputField.focus(); }, 0);
   }
@@ -80,11 +80,12 @@ export default class KeyboardComponent {
     this.container.append(this.element);
   }
 
-  setClickListener() {
-    this.element.addEventListener('click', (evt) => {
+  setPointerEventListener() {
+    this.element.addEventListener('pointerdown', (evt) => {
       this.currentInpuMode = 'virtual';
       const keyButton = evt.target.closest('.key');
       let printValue = null;
+
       if (keyButton) {
         printValue = this.getKeyPrintValue(keyButton);
 
@@ -92,12 +93,20 @@ export default class KeyboardComponent {
           this.shiftKey = false;
         }
 
+        keyButton.classList.add('virtual-keyboard__key--pressed');
+        const animationendHadler = () => {
+          keyButton.classList.remove('virtual-keyboard__key--pressed');
+          keyButton.removeEventListener('animationend', animationendHadler);
+        };
+        keyButton.addEventListener('animationend', animationendHadler);
+
         this.insertChar(printValue);
         this.updateKeys();
         this.outputField.focus();
       }
-      return undefined;
     });
+
+    this.element.addEventListener('contextmenu', (evt) => evt.preventDefault());
   }
 
   setKeyboardEventListener() {
