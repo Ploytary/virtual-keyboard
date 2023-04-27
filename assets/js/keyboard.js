@@ -435,7 +435,7 @@ export default class KeyboardComponent {
         this.deleteChar('backward');
         printValue = '';
         break;
-      case 'NumpadDecimal':
+      case 'Delete':
         this.deleteChar('forward');
         printValue = '';
         break;

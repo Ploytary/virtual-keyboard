@@ -46,7 +46,7 @@ const KEYBOARD_KEYS = [
   { value: 'Home', code: 36, details: 'Numpad7' },
   { value: 'PageUp', code: 33, details: 'Numpad9' },
   {
-    value: 'Delete', code: 46, details: 'NumpadDecimal', order: 28,
+    value: 'Del', code: 46, details: 'Delete', order: 28,
   },
   { value: 'End', code: 35, details: 'Numpad1' },
   { value: 'PageDown', code: 34, details: 'Numpad3' },
