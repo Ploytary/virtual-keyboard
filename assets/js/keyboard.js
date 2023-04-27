@@ -6,11 +6,13 @@ export default class KeyboardComponent {
     this.container = null;
     this.outputField = outputField;
     this.keyComponents = null;
+    this.keyData = null;
     this.element = null;
     this.capsLock = false;
     this.shiftKey = false;
     this.ctrlKey = false;
     this.altKey = false;
+    this.currentLang = 'primary';
   }
 
   init() {
@@ -41,7 +43,8 @@ export default class KeyboardComponent {
       this.outputField = textField;
     }
 
-    this.keyComponents = KEYBOARD_KEYS
+    const multilangKeyboardKeys = this.mergeKeyboardKeyData(KEYBOARD_KEYS, KEYBOARD_KEYS_LANG_RU);
+    this.keyComponents = multilangKeyboardKeys
       .filter((keyData) => keyData.order !== undefined)
       .sort((a, b) => a.order - b.order)
       .map((keyData) => new KeyComponent(keyData));
@@ -267,6 +270,12 @@ export default class KeyboardComponent {
       default: return undefined;
     }
 
+    if (this.ctrlKey && this.shiftKey) {
+      this.switchInputLanguage();
+      this.ctrlKey = false;
+      this.shiftKey = false;
+    }
+
     return undefined;
   }
 
@@ -296,23 +305,55 @@ export default class KeyboardComponent {
       this.switchKeyHoldClass(keyCode, keyStatusSource);
     });
 
-    if (this.shiftKey) {
-      this.keyComponents.forEach((component) => {
-        let buttonValue = null;
-        const element = component.getElement();
-        if (Array.isArray(component.value)) {
-          buttonValue = component.value.length > 1 ? component.value[1] : component.value[0];
-          element.textContent = buttonValue;
-        } else {
-          element.textContent = component.value;
+    this.keyComponents.forEach((component) => {
+      let keyValue = component.value;
+      if (this.currentLang === 'secondary') {
+        if (component.otherLangValue.length === 2) {
+          keyValue = component.otherLangValue;
         }
+        if (component.otherLangValue.length === 1) {
+          keyValue = [component.value[0], component.otherLangValue[0]];
+        }
+      }
+
+      const element = component.getElement();
+      if (this.shiftKey) {
+        if (Array.isArray(keyValue)) {
+          element.textContent = keyValue.length > 1
+            ? keyValue[1]
+            : keyValue[0];
+        } else {
+          element.textContent = keyValue;
+        }
+      } else {
+        element.textContent = Array.isArray(keyValue)
+          ? keyValue[0]
+          : keyValue;
+      }
+    });
+  }
+
+  switchInputLanguage() {
+    this.currentLang = this.currentLang === 'primary' ? 'secondary' : 'primary';
+  }
+
+  mergeKeyboardKeyData(primaryLangKeyboardKeyData, secondaryLangKeyboardKeyData) {
+    const mergedData = primaryLangKeyboardKeyData
+      .map((basekey) => {
+        const langKeyData = secondaryLangKeyboardKeyData
+          .find((langKey) => langKey.code === basekey.code);
+        let result = {};
+        if (langKeyData) {
+          result = {
+            ...basekey,
+            otherLangValue: langKeyData.value,
+          };
+        } else {
+          result = { ...basekey };
+        }
+        return result;
       });
-    } else {
-      this.keyComponents.forEach((component) => {
-        const buttonValue = Array.isArray(component.value) ? component.value[0] : component.value;
-        const element = component.getElement();
-        element.textContent = buttonValue;
-      });
-    }
+    this.keyData = mergedData;
+    return mergedData;
   }
 }

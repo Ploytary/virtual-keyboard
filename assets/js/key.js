@@ -1,14 +1,14 @@
 export default class KeyComponent {
   constructor(keyData) {
     const {
-      code, value, order, details,
+      code, value, order, details, otherLangValue = [],
     } = keyData;
     this.code = code;
     this.value = value;
     this.details = details;
     this.order = order;
     this.element = this.getElement();
-    this.otherLangValue = [];
+    this.otherLangValue = otherLangValue;
   }
 
   getElement() {
