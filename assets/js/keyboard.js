@@ -135,11 +135,15 @@ export default class KeyboardComponent {
           default:
             printValue = keyButton.textContent;
         }
+
+        if (!(keyButton.dataset.details === 'ShiftLeft' || keyButton.dataset.details === 'ShiftRight')) {
+          this.shiftKey = false;
+        }
+
         this.insertChar(printValue);
         this.updateKeys();
         this.outputField.focus();
       }
-
       return undefined;
     });
   }
@@ -317,7 +321,15 @@ export default class KeyboardComponent {
       }
 
       const element = component.getElement();
-      if (this.shiftKey) {
+      const keyMode = this.getKeyInputMode();
+
+      if (keyMode === 'base') {
+        element.textContent = Array.isArray(keyValue)
+          ? keyValue[0]
+          : keyValue;
+      }
+
+      if (keyMode === 'alt') {
         if (Array.isArray(keyValue)) {
           element.textContent = keyValue.length > 1
             ? keyValue[1]
@@ -325,10 +337,6 @@ export default class KeyboardComponent {
         } else {
           element.textContent = keyValue;
         }
-      } else {
-        element.textContent = Array.isArray(keyValue)
-          ? keyValue[0]
-          : keyValue;
       }
     });
   }
@@ -355,5 +363,17 @@ export default class KeyboardComponent {
       });
     this.keyData = mergedData;
     return mergedData;
+  }
+
+  getKeyInputMode() {
+    let keyMode = null;
+    if (this.shiftKey && this.capsLock) {
+      keyMode = 'base';
+    } else if (this.capsLock || this.shiftKey) {
+      keyMode = 'alt';
+    } else {
+      keyMode = 'base';
+    }
+    return keyMode;
   }
 }
