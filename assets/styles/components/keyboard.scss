@@ -3,9 +3,9 @@
   flex-direction: column;
   align-items: center;
   gap: 30px;
-  padding: 10px 15px;
   font-family: "Supermolot";
   font-size: 18px;
+  margin: 10px 15px;
 
   &__message {
     width: 100%;
@@ -59,6 +59,10 @@
   &__note {
     margin: 0;
     color: white;
+  }
+
+  &__main-board {
+    width: 100%;
   }
 
   &__keys-container {

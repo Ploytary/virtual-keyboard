@@ -1,5 +1,6 @@
 import { KEYBOARD_KEYS, KEYBOARD_KEYS_LANG_RU } from './constants.js';
 import KeyComponent from './key.js';
+import GlitchEffect from './glitch-effect.js';
 
 export default class KeyboardComponent {
   constructor(currentLang = 'primary') {
@@ -19,11 +20,13 @@ export default class KeyboardComponent {
   init(outputField) {
     const keyboardElementTemplate = (
       `
-    <article class="virtual-keyboard">
-      <div class="virtual-keyboard__keys-container"></div>
+      <article class="virtual-keyboard">
+      <div class="virtual-keyboard__main-board">
+        <div class="virtual-keyboard__keys-container"></div>
+      </div>
       <p class="virtual-keyboard__note">
         Клавиатура создана в операционной системе Windows<br>
-        Для переключения языка комбинация: левыe ctrl + alt
+        Для переключения языка комбинация: левыe ctrl + shift
       </p>
     </article>
       `
@@ -91,7 +94,7 @@ export default class KeyboardComponent {
   }
 
   setPointerEventListener() {
-    this.element.addEventListener('pointerdown', (evt) => {
+    this.element.addEventListener('pointerup', (evt) => {
       this.currentInpuMode = 'virtual';
       const keyButton = evt.target.closest('.key');
       let printValue = null;
@@ -176,6 +179,7 @@ export default class KeyboardComponent {
         }
       } else {
         keyElement.classList.add('virtual-keyboard__key--hold');
+        keyElement.parentElement.classList.add('virtual-keyboard__key--hold');
         printValue = this.getKeyPrintValue(keyElement);
       }
 
@@ -188,6 +192,7 @@ export default class KeyboardComponent {
       this.keyComponents.forEach((component) => {
         if (!(component.details === 'CapsLock')) {
           component.getElement().classList.remove('virtual-keyboard__key--hold');
+          component.getElement().parentElement.classList.remove('virtual-keyboard__key--hold');
         }
 
         if (evt.code === 'ShiftLeft' || evt.code === 'ShiftRight') {
@@ -350,8 +355,10 @@ export default class KeyboardComponent {
       .forEach((element) => {
         if (keyStatus) {
           element.classList.add('virtual-keyboard__key--hold');
+          element.parentElement.classList.add('virtual-keyboard__key--hold');
         } else {
           element.classList.remove('virtual-keyboard__key--hold');
+          element.parentElement.classList.remove('virtual-keyboard__key--hold');
         }
       });
     return undefined;
@@ -403,6 +410,11 @@ export default class KeyboardComponent {
 
   switchInputLanguage() {
     this.currentLang = this.currentLang === 'primary' ? 'secondary' : 'primary';
+    const keyContainer = this.element.querySelector('.virtual-keyboard__keys-container');
+    setTimeout(() => {
+      const glitch = new GlitchEffect(keyContainer, { duration: 0.5, shiftStrength: 50 });
+      glitch.render();
+    }, 0);
   }
 
   mergeKeyboardKeyData(primaryLangKeyboardKeyData, secondaryLangKeyboardKeyData) {
@@ -493,5 +505,9 @@ export default class KeyboardComponent {
         printValue = keyButton.textContent;
     }
     return printValue;
+  }
+
+  getElement() {
+    return this.element;
   }
 }
