@@ -28,7 +28,10 @@ export default class KeyboardComponent {
     </article>
       `
     );
-    const textFieldTemplate = '<textarea class="virtual-keyboard__input-field" name="field" cols="30" rows="10"></textarea>';
+    const textFieldTemplate = `<div class="virtual-keyboard__message">
+      <textarea class="virtual-keyboard__input-field" name="field" cols="30" rows="10"></textarea>
+      <p class="virtual-keyboard__input-field-label">MESSAGE</p>
+    </div>`;
 
     function createElement(template) {
       const container = document.createElement('div');
@@ -41,8 +44,9 @@ export default class KeyboardComponent {
     this.outputField = outputField;
 
     if (!this.outputField) {
-      const textField = createElement(textFieldTemplate);
-      this.element.prepend(textField);
+      const messageContainerElement = createElement(textFieldTemplate);
+      const textField = messageContainerElement.querySelector('textarea');
+      this.element.prepend(messageContainerElement);
       this.outputField = textField;
     }
 

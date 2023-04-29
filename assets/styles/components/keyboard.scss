@@ -4,13 +4,61 @@
   align-items: center;
   gap: 30px;
   padding: 10px 15px;
+  font-family: "Supermolot";
+  font-size: 18px;
+
+  &__message {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
 
   &__input-field {
+    position: relative;
     width: 100%;
+    background: rgba(6, 19, 19, 0.8);
+    border: 2px solid #12A1A1;
+    font-family: inherit;
+    font-size: inherit;
+    letter-spacing: 0.10em;
+    color: #75F0F0;
+
+    &::selection {
+      background-color: #75F0F0;
+      color: black;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__input-field-label {
+    position: relative;
+    margin: 0;
+    padding: 0 10px;
+    width: max-content;
+    font-family: inherit;
+    font-size: inherit;
+    background-color: #12A1A1;
+    color: black;
+    &::after {
+      content: "";
+      position: absolute;
+      display: block;
+      background-color: #12A1A1;
+      transform: translateX(100%);
+      bottom: 0;
+      right: 0;
+      background-color: transparent;
+      border-bottom: 21px solid transparent;
+      border-left: 21px solid #12A1A1;
+    }
   }
 
   &__note {
     margin: 0;
+    color: white;
   }
 
   &__keys-container {
@@ -19,6 +67,9 @@
     flex-direction: column;
     align-items: stretch;
     gap: 5px;
+    padding: 2%;
+    background: rgba(35, 15, 6, 0.75);
+    border: 2px solid rgba(163, 41, 41, 0.3);
   }
 
   &__keys-line {
@@ -27,10 +78,20 @@
   }
 
   &__key--hold {
-    background-color: green;
+    transition: none;
+    animation: none;
+    background: #12A1A1;
+    border-color: #75F0F0;
+    box-shadow: 0px 0px 8px #12A1A1;
+    text-shadow: none;
+    color: black;
+
+    &:hover {
+      text-shadow: none;
+    }
   }
 
   &__key--pressed {
-    animation: press-key 0.3s ease-in both;
+    animation: press-key 0.3s linear both;
   }
 }
