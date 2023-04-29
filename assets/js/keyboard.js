@@ -2,9 +2,9 @@ import { KEYBOARD_KEYS, KEYBOARD_KEYS_LANG_RU } from './constants.js';
 import KeyComponent from './key.js';
 
 export default class KeyboardComponent {
-  constructor(outputField) {
+  constructor(currentLang = 'primary') {
     this.container = null;
-    this.outputField = outputField;
+    this.outputField = null;
     this.keyComponents = null;
     this.keyData = null;
     this.element = null;
@@ -13,10 +13,10 @@ export default class KeyboardComponent {
     this.ctrlKey = false;
     this.altKey = false;
     this.currentInpuMode = 'physical';
-    this.currentLang = 'primary';
+    this.currentLang = currentLang;
   }
 
-  init() {
+  init(outputField) {
     const keyboardElementTemplate = (
       `
     <article class="virtual-keyboard">
@@ -37,6 +37,8 @@ export default class KeyboardComponent {
     }
 
     this.element = createElement(keyboardElementTemplate);
+
+    this.outputField = outputField;
 
     if (!this.outputField) {
       const textField = createElement(textFieldTemplate);
@@ -76,7 +78,7 @@ export default class KeyboardComponent {
       addedKeys += lineCount;
       keysContainer.append(line);
     });
-
+    this.updateKeys();
     this.container.append(this.element);
   }
 

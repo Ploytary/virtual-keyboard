@@ -1,5 +1,13 @@
 import KeyboardComponent from './keyboard.js';
 
-const keyboard = new KeyboardComponent();
-keyboard.init();
-keyboard.render(document.body);
+let keyboard;
+
+window.onload = () => {
+  const lang = localStorage.getItem('currentLang');
+
+  keyboard = new KeyboardComponent(lang);
+  keyboard.init();
+  keyboard.render(document.body);
+};
+
+window.onunload = () => localStorage.setItem('currentLang', keyboard.currentLang);
