@@ -34,15 +34,25 @@ body {
   initial-value: transparent;
   inherits: false;
 }
-.key {
+.virtual-keyboard__key-shadow-wrapper {
   position: relative;
   width: 5.5%;
   aspect-ratio: 1/1;
-  padding: 0;
   flex-shrink: 0;
   user-select: none;
-  background-color: rgba(60, 6, 6, 0.75);
+  filter: drop-shadow(0px 0px 6px rgba(135, 44, 44, 0.5));
+  transition: filter 0.2s linear;
+}
+.virtual-keyboard__key-shadow-wrapper:hover {
+  filter: drop-shadow(2px 2px 4px rgba(18, 161, 161, 0.5));
+}
+
+.key {
+  padding: 0;
+  background-color: rgb(60, 6, 6);
   border: none;
+  width: 100%;
+  height: 100%;
   font-family: inherit;
   font-size: inherit;
   color: #75F0F0;
@@ -52,10 +62,9 @@ body {
   transition-property: --gradient-color-1, --gradient-color-2, border-color, background-color, text-shadow;
   transition-duration: 0.4s;
   clip-path: polygon(0% 0%, 100% 0%, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
-  filter: drop-shadow(0px 0px 6px rgba(135, 44, 44, 0.5));
 }
 .key:hover {
-  --gradient-color-1: rgba(117, 240, 240, 0.4);
+  --gradient-color-1: rgba(117, 240, 240, 0.3);
   --gradient-color-2: rgba(117, 240, 240, 0);
   border-color: #75F0F0;
   text-shadow: 0px 0px 5px #75F0F0;
@@ -73,26 +82,26 @@ body {
   height: 100%;
 }
 
-[data-details=Backspace],
-[data-details=Tab],
-[data-details=Enter],
-[data-details=ShiftLeft],
-[data-details=ShiftRight],
-[data-details=CapsLock],
-[data-details=Space],
-[data-details=Delete] {
+div[data-details=Backspace],
+div[data-details=Tab],
+div[data-details=Enter],
+div[data-details=ShiftLeft],
+div[data-details=ShiftRight],
+div[data-details=CapsLock],
+div[data-details=Space],
+div[data-details=Delete] {
   flex-grow: 1;
   aspect-ratio: auto;
 }
 
-[data-details=Enter],
-[data-details=ShiftRight] {
+div[data-details=Enter],
+div[data-details=ShiftRight] {
   width: 12%;
   flex-grow: 0;
   aspect-ratio: auto;
 }
 
-[data-details=Space] {
+div[data-details=Space] {
   width: 12%;
   aspect-ratio: auto;
 }
@@ -180,8 +189,28 @@ body {
 .virtual-keyboard__key--hold:hover {
   text-shadow: none;
 }
-.virtual-keyboard__key--pressed {
+
+button.virtual-keyboard__key--pressed {
   animation: press-key 0.3s linear both;
+}
+button.virtual-keyboard__key--hold {
+  transition: none;
+  animation: none;
+  background: #12A1A1;
+  border-color: #75F0F0;
+  box-shadow: 0px 0px 8px #12A1A1;
+  text-shadow: none;
+  color: black;
+}
+button.virtual-keyboard__key--hold:hover {
+  text-shadow: none;
+}
+
+div.virtual-keyboard__key--pressed {
+  filter: drop-shadow(2px 2px 4px rgba(18, 161, 161, 0.5));
+}
+div.virtual-keyboard__key--hold {
+  filter: drop-shadow(2px 2px 4px rgba(18, 161, 161, 0.5));
 }
 
 /*# sourceMappingURL=style.css.map */

@@ -90,8 +90,34 @@
       text-shadow: none;
     }
   }
+}
 
-  &__key--pressed {
+button {
+  &.virtual-keyboard__key--pressed {
     animation: press-key 0.3s linear both;
+  }
+
+  &.virtual-keyboard__key--hold {
+    transition: none;
+    animation: none;
+    background: #12A1A1;
+    border-color: #75F0F0;
+    box-shadow: 0px 0px 8px #12A1A1;
+    text-shadow: none;
+    color: black;
+
+    &:hover {
+      text-shadow: none;
+    }
+  }
+}
+
+div {
+  &.virtual-keyboard__key--pressed {
+    filter: drop-shadow(2px 2px 4px rgba(18, 161, 161, 0.5));
+  }
+
+  &.virtual-keyboard__key--hold {
+    filter: drop-shadow(2px 2px 4px rgba(18, 161, 161, 0.5));
   }
 }

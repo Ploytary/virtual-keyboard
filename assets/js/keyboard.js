@@ -77,7 +77,11 @@ export default class KeyboardComponent {
       line.classList.add('virtual-keyboard__keys-line');
       this.keyComponents.slice(addedKeys, addedKeys + lineCount)
         .forEach((keyComponent) => {
-          line.append(keyComponent.getElement());
+          const shadowWrapper = document.createElement('div');
+          shadowWrapper.classList.add('virtual-keyboard__key-shadow-wrapper');
+          shadowWrapper.dataset.details = keyComponent.details;
+          shadowWrapper.append(keyComponent.getElement());
+          line.append(shadowWrapper);
         });
       addedKeys += lineCount;
       keysContainer.append(line);
@@ -100,8 +104,10 @@ export default class KeyboardComponent {
         }
 
         keyButton.classList.add('virtual-keyboard__key--pressed');
+        keyButton.parentElement.classList.add('virtual-keyboard__key--pressed');
         const animationendHadler = () => {
           keyButton.classList.remove('virtual-keyboard__key--pressed');
+          keyButton.parentElement.classList.remove('virtual-keyboard__key--pressed');
           keyButton.removeEventListener('animationend', animationendHadler);
         };
         keyButton.addEventListener('animationend', animationendHadler);
@@ -133,6 +139,7 @@ export default class KeyboardComponent {
 
       function animationendHandler() {
         keyElement.classList.remove('virtual-keyboard__key--pressed');
+        keyElement.parentElement.classList.remove('virtual-keyboard__key--pressed');
         keyElement.removeEventListener('animationend', animationendHandler);
       }
       associatedKeyComponent.getElement().addEventListener('animationend', animationendHandler);
@@ -144,6 +151,7 @@ export default class KeyboardComponent {
       if (isServiceKey) {
         if (!evt.repeat) {
           keyElement.classList.add('virtual-keyboard__key--pressed');
+          keyElement.parentElement.classList.add('virtual-keyboard__key--pressed');
           printValue = this.getKeyPrintValue(keyElement);
           if (prevInputMode !== this.currentInpuMode) {
             if ((associatedKeyComponent.details === 'ShiftLeft' || associatedKeyComponent.details === 'ShiftRight')) {
@@ -159,6 +167,7 @@ export default class KeyboardComponent {
         }
       } else if (!evt.repeat) {
         keyElement.classList.add('virtual-keyboard__key--pressed');
+        keyElement.parentElement.classList.add('virtual-keyboard__key--pressed');
         printValue = this.getKeyPrintValue(keyElement);
         if (prevInputMode !== this.currentInpuMode) {
           this.shiftKey = false;
