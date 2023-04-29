@@ -170,6 +170,7 @@ div[data-details=Space] {
   width: 100%;
 }
 .virtual-keyboard__keys-container {
+  position: relative;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -179,6 +180,16 @@ div[data-details=Space] {
   background: rgba(35, 15, 6, 0.75);
   border: 2px solid rgba(163, 41, 41, 0.3);
 }
+.virtual-keyboard__keys-container:before {
+  position: absolute;
+  content: "";
+  inset: -2px;
+  z-index: 1;
+  background-image: url("/assets/images/keyboard-pattern.png");
+  opacity: 0.7;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
 .virtual-keyboard__keys-line {
   display: flex;
   gap: 1%;
@@ -186,9 +197,7 @@ div[data-details=Space] {
 .virtual-keyboard__key--hold {
   transition: none;
   animation: none;
-  background: #12A1A1;
   border-color: #75F0F0;
-  box-shadow: 0px 0px 8px #12A1A1;
   text-shadow: none;
   color: black;
 }
