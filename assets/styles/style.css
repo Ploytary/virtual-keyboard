@@ -9,10 +9,16 @@
   box-sizing: border-box;
 }
 
+html {
+  height: 100%;
+}
+
 body {
+  height: 100%;
   margin: 0 auto;
   max-width: 865px;
-  background-image: url("/assets/images/background-pattern.png");
+  background-image: url("/assets/images/background-pattern.png"), linear-gradient(rgba(60, 6, 6, 0) 60%, rgba(60, 6, 6, 0.5));
+  background-blend-mode: color-dodge;
 }
 
 @keyframes press-key {
@@ -48,6 +54,8 @@ body {
 }
 
 .key {
+  position: relative;
+  z-index: 2;
   padding: 0;
   background-color: rgb(60, 6, 6);
   border: none;
@@ -116,7 +124,8 @@ div[data-details=Space] {
   gap: 30px;
   font-family: "Supermolot";
   font-size: 18px;
-  margin: 10px 15px;
+  padding-top: 30px;
+  margin: 0 15px;
 }
 .virtual-keyboard__message {
   width: 100%;

@@ -25,6 +25,8 @@
 }
 
 .key {
+  position: relative;
+  z-index: 2;
   padding: 0;
   background-color: rgba(60, 6, 6, 1);
   border: none;

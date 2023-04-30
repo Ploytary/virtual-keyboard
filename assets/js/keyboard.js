@@ -1,6 +1,7 @@
 import { KEYBOARD_KEYS, KEYBOARD_KEYS_LANG_RU } from './constants.js';
 import KeyComponent from './key.js';
 import GlitchEffect from './glitch-effect.js';
+import createTapEffect from './tap-effect.js';
 
 export default class KeyboardComponent {
   constructor(currentLang = 'primary') {
@@ -106,6 +107,7 @@ export default class KeyboardComponent {
           this.shiftKey = false;
         }
 
+        createTapEffect(keyButton.parentElement);
         keyButton.classList.add('virtual-keyboard__key--pressed');
         keyButton.parentElement.classList.add('virtual-keyboard__key--pressed');
         const animationendHadler = () => {
@@ -156,6 +158,7 @@ export default class KeyboardComponent {
           keyElement.classList.add('virtual-keyboard__key--pressed');
           keyElement.parentElement.classList.add('virtual-keyboard__key--pressed');
           printValue = this.getKeyPrintValue(keyElement);
+          createTapEffect(keyElement.parentElement);
           if (prevInputMode !== this.currentInpuMode) {
             if ((associatedKeyComponent.details === 'ShiftLeft' || associatedKeyComponent.details === 'ShiftRight')) {
               this.shiftKey = !this.shiftKey;
@@ -172,6 +175,7 @@ export default class KeyboardComponent {
         keyElement.classList.add('virtual-keyboard__key--pressed');
         keyElement.parentElement.classList.add('virtual-keyboard__key--pressed');
         printValue = this.getKeyPrintValue(keyElement);
+        createTapEffect(keyElement.parentElement);
         if (prevInputMode !== this.currentInpuMode) {
           this.shiftKey = false;
           this.altKey = false;
@@ -182,7 +186,6 @@ export default class KeyboardComponent {
         keyElement.parentElement.classList.add('virtual-keyboard__key--hold');
         printValue = this.getKeyPrintValue(keyElement);
       }
-
       this.insertChar(printValue);
       this.updateKeys();
       this.outputField.focus();
