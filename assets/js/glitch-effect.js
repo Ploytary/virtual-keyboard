@@ -236,8 +236,10 @@ export default class GlitchEffect {
 
   setListener() {
     this.animateElement.addEventListener('animationend', () => {
-      this.animateElement.remove();
-      this.animateElement = null;
+      if (this.animateElement) {
+        this.animateElement.remove();
+        this.animateElement = null;
+      }
     });
   }
 
