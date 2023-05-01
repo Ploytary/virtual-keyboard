@@ -1,4 +1,4 @@
-import KeyboardComponent from './keyboard.js';
+import KeyboardComponent from './components/keyboard.js';
 
 let keyboard;
 

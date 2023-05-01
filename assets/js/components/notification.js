@@ -1,4 +1,4 @@
-import createElement from "./utils.js";
+import createElement from '../utils.js';
 
 export default class NotificationComponent {
   constructor(container, notifications) {
@@ -106,7 +106,7 @@ export default class NotificationComponent {
   }
 
   showNotifications() {
-    const START_DELAY = 0;
+    const START_DELAY = 5;
     const TIME_BETWEEN_NOTIFICATIONS = 5;
     const SHOW_DURATION = 15;
 
