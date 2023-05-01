@@ -1,6 +1,6 @@
 @font-face {
   font-family: "Supermolot";
-  src: url("/assets/fonts/TTSupermolotNeue-Medium.woff") format("woff");
+  src: url("../fonts/TTSupermolotNeue-Medium.woff") format("woff");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -19,7 +19,7 @@ body {
   height: 100%;
   margin: 0 auto;
   max-width: 865px;
-  background-image: url("/assets/images/background-pattern.png"), linear-gradient(rgba(60, 6, 6, 0.5) 0%, rgba(60, 6, 6, 0) 40%);
+  background-image: url("../images/background-pattern.png"), linear-gradient(rgba(60, 6, 6, 0.5) 0%, rgba(60, 6, 6, 0) 40%);
   background-repeat: repeat, no-repeat;
   background-position: left top, bottom;
   background-blend-mode: color-dodge;
@@ -152,8 +152,10 @@ div[data-details=Space] {
   position: absolute;
   content: "";
   inset: -2px;
-  z-index: 1;
+  bottom: -30px;
+  z-index: 2;
   opacity: 0.7;
+  background-image: url("../images/keyboard-pattern.png");
   mix-blend-mode: overlay;
   pointer-events: none;
 }
@@ -253,7 +255,7 @@ div[data-details=Space] {
   content: "";
   inset: -2px;
   z-index: 1;
-  background-image: url("/assets/images/keyboard-pattern.png");
+  background-image: url("../images/keyboard-pattern.png");
   opacity: 0.7;
   mix-blend-mode: overlay;
   pointer-events: none;
@@ -312,7 +314,7 @@ div.virtual-keyboard__key--hold {
   inset: -2px;
   bottom: -30px;
   z-index: 1;
-  background-image: url("/assets/images/keyboard-pattern.png");
+  background-image: url("../images/keyboard-pattern.png");
   opacity: 0.7;
   mix-blend-mode: overlay;
   pointer-events: none;
