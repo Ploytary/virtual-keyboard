@@ -12,6 +12,7 @@
 html {
   height: calc(100vh + 300px);
   overflow-y: scroll;
+  min-width: 320px;
 }
 
 body {
@@ -126,9 +127,19 @@ div[data-details=Space] {
   align-items: center;
   gap: 30px;
   font-family: "Supermolot";
-  font-size: 18px;
+  font-size: 10px;
   padding-top: 30px;
   margin: 0 15px;
+}
+@media (min-width: 550px) {
+  .virtual-keyboard {
+    font-size: 14px;
+  }
+}
+@media (min-width: 700px) {
+  .virtual-keyboard {
+    font-size: 18px;
+  }
 }
 .virtual-keyboard__message {
   position: relative;
