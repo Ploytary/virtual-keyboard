@@ -286,8 +286,13 @@ export default class KeyboardComponent {
         break;
     }
 
-    let caret = this.outputField.selectionStart + shift;
-    if (caret >= 0) {
+    const userSelectionRange = this.outputField.selectionEnd - this.outputField.selectionStart;
+    const prevStart = this.outputField.selectionStart;
+    let caret = this.outputField.selectionEnd + shift;
+    if (userSelectionRange !== 0) {
+      this.outputField.value = [this.outputField.value.slice(0, this.outputField.selectionStart), this.outputField.value.slice(this.outputField.selectionEnd)].join('');
+      caret = prevStart;
+    } else if (caret >= 0) {
       this.outputField.value = [this.outputField.value.slice(0, caret), this.outputField.value.slice(caret + 1)].join('');
     } else {
       caret = 0;
@@ -507,6 +512,9 @@ export default class KeyboardComponent {
         printValue = '';
         break;
       default:
+        if (this.outputField.selectionEnd - this.outputField.selectionStart > 1) {
+          this.deleteChar('backward');
+        }
         printValue = keyButton.textContent;
     }
     return printValue;
