@@ -1,5 +1,7 @@
 import { KEYBOARD_KEYS, KEYBOARD_KEYS_LANG_RU } from './constants.js';
 import KeyComponent from './key.js';
+import NotificationComponent from './notification.js';
+import createElement from './utils.js';
 import GlitchEffect from './glitch-effect.js';
 import createTapEffect from './tap-effect.js';
 
@@ -25,10 +27,6 @@ export default class KeyboardComponent {
       <div class="virtual-keyboard__main-board">
         <div class="virtual-keyboard__keys-container"></div>
       </div>
-      <p class="virtual-keyboard__note">
-        Клавиатура создана в операционной системе Windows<br>
-        Для переключения языка комбинация: левыe ctrl + shift
-      </p>
     </article>
       `
     );
@@ -36,12 +34,6 @@ export default class KeyboardComponent {
       <textarea class="virtual-keyboard__input-field" name="field" cols="30" rows="10" spellcheck="false"></textarea>
       <p class="virtual-keyboard__input-field-label">MESSAGE</p>
     </div>`;
-
-    function createElement(template) {
-      const container = document.createElement('div');
-      container.innerHTML = template;
-      return container.firstElementChild;
-    }
 
     this.element = createElement(keyboardElementTemplate);
 
@@ -53,6 +45,14 @@ export default class KeyboardComponent {
       this.element.prepend(messageContainerElement);
       this.outputField = textField;
     }
+
+    const notifications = [
+      'Для переключения языка используйте <span class="notification__mark">[ctrl + shift]</span>',
+      'Клавиатура создана в операционной системе Windows',
+    ];
+    const notification = new NotificationComponent(this.element, notifications);
+    notification.init();
+    notification.render();
 
     const multilangKeyboardKeys = this.mergeKeyboardKeyData(KEYBOARD_KEYS, KEYBOARD_KEYS_LANG_RU);
     this.keyComponents = multilangKeyboardKeys

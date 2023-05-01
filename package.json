@@ -6,7 +6,8 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "npx eslint assets/js/**/*.js"
+    "lint": "npx eslint assets/js/**/*.js",
+    "sass": "sass assets/styles/main.scss assets/styles/style.css --watch"
   },
   "author": "",
   "license": "ISC",
