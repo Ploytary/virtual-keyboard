@@ -128,7 +128,6 @@ export default class NotificationComponent {
       const currentNotification = notificationElementsClone[innerIndex];
       const svg = currentNotification.querySelector('svg');
       const clone = masterSVG.cloneNode(true);
-      console.log(clone);
       const parent = currentNotification.querySelector('.notification__icon-container');
       parent.innerHTML = '';
       parent.append(clone);
