@@ -6,6 +6,8 @@ export default class NotificationComponent {
     this.element = null;
     this.notificationData = notifications;
     this.notificationElements = null;
+    this.iconElement = null;
+    this.svgElement = null;
   }
 
   init() {
@@ -86,13 +88,14 @@ export default class NotificationComponent {
     </g>
   </svg>`;
     const svgElement = createElement(svgIconTemplate);
+    this.svgElement = svgElement;
 
     const notificationElements = this.notificationData.map((item) => {
       const notificationElement = createElement(notificationItemTemplate);
       const container = notificationElement.querySelector('.notification__icon-container');
       const textElement = notificationElement.querySelector('.notification__text');
       textElement.innerHTML = item;
-      const clone = svgElement.cloneNode(true);
+      const clone = this.svgElement.cloneNode(true);
       container.append(clone);
 
       return notificationElement;
@@ -111,6 +114,7 @@ export default class NotificationComponent {
     const SHOW_DURATION = 15;
 
     const notificationElementsClone = this.notificationElements.slice();
+    const masterSVG = this.svgElement;
 
     function showNotification(mainContainer, notificationIndex = 0) {
       let innerIndex = notificationIndex;
@@ -122,6 +126,14 @@ export default class NotificationComponent {
       }
 
       const currentNotification = notificationElementsClone[innerIndex];
+      const svg = currentNotification.querySelector('svg');
+      const clone = masterSVG.cloneNode(true);
+      console.log(clone);
+      const parent = currentNotification.querySelector('.notification__icon-container');
+      parent.innerHTML = '';
+      parent.append(clone);
+      svg.remove();
+
       mainContainer.append(currentNotification);
       innerIndex += 1;
 
