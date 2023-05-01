@@ -32,7 +32,9 @@ export default class KeyboardComponent {
     );
     const textFieldTemplate = `<div class="virtual-keyboard__message">
       <textarea class="virtual-keyboard__input-field" name="field" cols="30" rows="10" spellcheck="false"></textarea>
-      <p class="virtual-keyboard__input-field-label">MESSAGE</p>
+      <div class="virtual-keyboard__input-field-control">
+        <button class="virtual-keyboard__send-button ">send</button>
+      </div>
     </div>`;
 
     this.element = createElement(keyboardElementTemplate);

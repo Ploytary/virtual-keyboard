@@ -9,20 +9,63 @@
   margin: 0 15px;
 
   &__message {
+    position: relative;
     width: 100%;
     display: flex;
     flex-direction: column;
+    margin-bottom: 30px;
+
+    &::before {
+      position: absolute;
+      content: "";
+      inset: -2px;
+      z-index: 1;
+      opacity: 0.7;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
+
+    &::after {
+      box-sizing: border-box;
+      left: 0;
+      top: 0;
+      position: absolute;
+      content: "";
+      z-index: 1;
+      border-style: solid;
+      border-width: 10px;
+      border-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M39 1H1V39H29.5858L39 29.5858V1ZM40 30L30 40H0V0H40V30Z' fill='%2312A1A1' fill-opacity='1'/%3E%3C/svg%3E") 10 stretch;
+      width: 100%;
+      height: 100%;  
+      pointer-events: none;
+    }
   }
 
   &__input-field {
     position: relative;
     width: 100%;
     background: rgba(6, 19, 19, 0.8);
-    border: 2px solid #12A1A1;
+    border: none;
     font-family: inherit;
     font-size: inherit;
     letter-spacing: 0.10em;
     color: #75F0F0;
+    resize: none;
+    clip-path: polygon(0% 0%, 100% 0%, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background-color: #12A1A1;
+    }
 
     &::selection {
       background-color: #75F0F0;
@@ -34,26 +77,37 @@
     }
   }
 
-  &__input-field-label {
-    position: relative;
+  &__input-field-control {
     margin: 0;
-    padding: 0 10px;
-    width: max-content;
-    font-family: inherit;
-    font-size: inherit;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    transform: translateY(100%);
+    padding: 2px 40px 2px 25px;
     background-color: #12A1A1;
     color: black;
-    &::after {
-      content: "";
-      position: absolute;
-      display: block;
-      background-color: #12A1A1;
-      transform: translateX(100%);
-      bottom: 0;
-      right: 0;
-      background-color: transparent;
-      border-bottom: 21px solid transparent;
-      border-left: 21px solid #12A1A1;
+    clip-path: polygon(0% 0%, 100% 0%, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0% 100%);
+  }
+
+  &__send-button {
+    margin: 0;
+    padding: 1px 5px 0px;
+    border: 2px solid transparent;
+    border-radius: 3px;
+    background-color: transparent;
+    color: black;
+    font-family: inherit;
+    font-size: inherit;
+    text-transform: uppercase;
+
+    &:hover {
+      border: 2px solid black;
+    }
+
+    &:active {
+      border: 2px solid transparent;
+      background-color: black;
+      color: #12A1A1;
     }
   }
 
