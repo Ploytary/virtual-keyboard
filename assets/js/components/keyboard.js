@@ -1,9 +1,9 @@
-import { KEYBOARD_KEYS, KEYBOARD_KEYS_LANG_RU } from './constants.js';
+import { KEYBOARD_KEYS, KEYBOARD_KEYS_LANG_RU } from '../constants.js';
 import KeyComponent from './key.js';
 import NotificationComponent from './notification.js';
-import createElement from './utils.js';
-import GlitchEffect from './glitch-effect.js';
-import createTapEffect from './tap-effect.js';
+import createElement from '../utils.js';
+import GlitchEffect from '../glitch-effect.js';
+import createTapEffect from '../tap-effect.js';
 
 export default class KeyboardComponent {
   constructor(currentLang = 'primary') {
