@@ -1,6 +1,7 @@
 import { KEYBOARD_KEYS, KEYBOARD_KEYS_LANG_RU } from '../constants.js';
 import KeyComponent from './key.js';
 import NotificationComponent from './notification.js';
+import ChatComponent from '../chat.js';
 import createElement from '../utils.js';
 import GlitchEffect from '../glitch-effect.js';
 import createTapEffect from '../tap-effect.js';
@@ -9,6 +10,7 @@ export default class KeyboardComponent {
   constructor(currentLang = 'primary') {
     this.container = null;
     this.outputField = null;
+    this.chat = null;
     this.keyComponents = null;
     this.keyData = null;
     this.element = null;
@@ -39,18 +41,35 @@ export default class KeyboardComponent {
 
     this.element = createElement(keyboardElementTemplate);
 
-    this.outputField = outputField;
-
     if (!this.outputField) {
       const messageContainerElement = createElement(textFieldTemplate);
       const textField = messageContainerElement.querySelector('textarea');
       this.element.prepend(messageContainerElement);
       this.outputField = textField;
+
+      messageContainerElement.addEventListener('pointerup', (evt) => {
+        const sendButton = evt.target.closest('button');
+        if (!sendButton) {
+          return;
+        }
+
+        this.chat.pushMessage({ userName: 'Me', userText: textField.value });
+        textField.value = '';
+      });
+
+      const chat = new ChatComponent(this.element);
+      this.chat = chat;
+    } else {
+      this.outputField = outputField;
+      const chat = new ChatComponent(this.element);
+      this.chat = chat;
     }
 
     const notifications = [
-      'Для переключения языка используйте <span class="notification__mark">[ctrl + shift]</span>',
-      'Клавиатура создана в операционной системе Windows',
+      'Для переключения языка используйте <span class="notification__mark">[CTRL + SHIFT].</span>',
+      'Клавиатура создана в операционной системе <span class="notification__mark">Windows.</span>',
+      'Доводилось пробовать <span class="notification__mark">ChatGPT?</span> Если нет, то самое время!',
+      'Для быстрой отправки сообщения используйте <span class="notification__mark">[CTRL + ENTER].</span>',
     ];
     const notification = new NotificationComponent(this.element, notifications);
     notification.init();
@@ -118,6 +137,13 @@ export default class KeyboardComponent {
           keyButton.removeEventListener('animationend', animationendHadler);
         };
         keyButton.addEventListener('animationend', animationendHadler);
+
+        if (this.ctrlKey && keyButton.dataset.details === 'Enter') {
+          const textField = this.outputField;
+          this.chat.pushMessage({ userName: 'Me', userText: textField.value });
+          textField.value = '';
+          printValue = '';
+        }
 
         this.insertChar(printValue);
         this.updateKeys();
@@ -188,6 +214,14 @@ export default class KeyboardComponent {
         keyElement.parentElement.classList.add('virtual-keyboard__key--hold');
         printValue = this.getKeyPrintValue(keyElement);
       }
+
+      if (this.ctrlKey && keyElement.dataset.details === 'Enter') {
+        const textField = this.outputField;
+        this.chat.pushMessage({ userName: 'Me', userText: textField.value });
+        textField.value = '';
+        printValue = '';
+      }
+
       this.insertChar(printValue);
       this.updateKeys();
       this.outputField.focus();
