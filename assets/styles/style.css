@@ -12,6 +12,7 @@
 html {
   height: calc(100vh + 300px);
   overflow-y: scroll;
+  overflow-x: hidden;
   min-width: 320px;
 }
 
@@ -144,6 +145,7 @@ div[data-details=Space] {
 .virtual-keyboard__message {
   position: relative;
   width: 100%;
+  height: 6em;
   display: flex;
   flex-direction: column;
   margin-bottom: 30px;
@@ -174,6 +176,7 @@ div[data-details=Space] {
   pointer-events: none;
 }
 .virtual-keyboard__input-field {
+  padding: 10px 15px;
   position: relative;
   width: 100%;
   background: rgba(6, 19, 19, 0.8);
@@ -280,6 +283,9 @@ div[data-details=Space] {
 .virtual-keyboard__key--pressed::after {
   border-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M39 1H1V39H29.5858L39 29.5858V1ZM40 30L30 40H0V0H40V30Z' fill='%2375F0F0' fill-opacity='0.75'/%3E%3C/svg%3E") 10 stretch;
 }
+.virtual-keyboard__chat {
+  height: 12em;
+}
 
 button.virtual-keyboard__key--pressed {
   animation: press-key 0.3s linear both;
@@ -345,7 +351,6 @@ div.virtual-keyboard__key--hold {
 }
 .notification__mark {
   color: #75F0F0;
-  text-transform: uppercase;
 }
 .notification__icon-container {
   position: relative;
@@ -513,6 +518,81 @@ div.virtual-keyboard__key--hold {
   to {
     height: 0%;
   }
+}
+.chat {
+  width: 100%;
+  position: relative;
+  letter-spacing: 0.05em;
+  clip-path: polygon(0% 0%, 100% 0%, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+}
+.chat__inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+  gap: 0.3em;
+  padding: 10px 15px;
+  background: rgba(6, 19, 19, 0.8);
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: 0.1em;
+  color: #75F0F0;
+  overflow-y: scroll;
+  word-break: break-all;
+  scroll-behavior: smooth;
+}
+.chat__inner::-webkit-scrollbar {
+  width: 4px;
+}
+.chat__inner::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+.chat__inner::-webkit-scrollbar-thumb {
+  background-color: #12A1A1;
+}
+.chat__inner::selection {
+  background-color: #75F0F0;
+  color: black;
+}
+.chat__inner:focus {
+  outline: none;
+}
+.chat::before {
+  position: absolute;
+  content: "";
+  inset: 0px;
+  bottom: 0px;
+  z-index: 2;
+  opacity: 0.7;
+  background-image: url("../images/keyboard-pattern.png");
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+.chat::after {
+  box-sizing: border-box;
+  left: 0;
+  top: 0;
+  position: absolute;
+  content: "";
+  z-index: 1;
+  border-style: solid;
+  border-width: 10px;
+  border-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M39 1H1V39H29.5858L39 29.5858V1ZM40 30L30 40H0V0H40V30Z' fill='%2312A1A1' fill-opacity='1'/%3E%3C/svg%3E") 10 stretch;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.chat__message {
+  margin: 0;
+  width: 100%;
+}
+.chat__user-name {
+  color: #FF4C4E;
+  margin-right: 0.3em;
+}
+.chat__user-text {
+  color: #75F0F0;
 }
 
 /*# sourceMappingURL=style.css.map */
